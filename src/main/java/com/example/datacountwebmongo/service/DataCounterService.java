@@ -295,23 +295,21 @@ public class DataCounterService {
             final String query = "contentsitename:ECHR AND (NOT (doctype=PR OR doctype=HFCOMOLD OR doctype=HECOMOLD))"
                     + (languageCode != null ? " AND (languageisocode=" + languageCode + ")" : "");
 
-            String uri = UriComponentsBuilder.newInstance()
-                    .scheme("https")
-                    .host("hudoc.echr.coe.int")
-                    .path("/app/query/results")
-                    .queryParam("query", query)
-                    .queryParam("select", "itemid")
-                    .queryParam("start", "0")
-                    .queryParam("length", "1")
-                    .queryParam("rankingModelId", "11111111-0000-0000-0000-000000000000")
-                    .toUriString();
-
-            String response = webClient.get()
-                    .uri(uri)
+            WebClient.ResponseSpec responseSpec = webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .scheme("https")
+                            .host("hudoc.echr.coe.int")
+                            .path("/app/query/results")
+                            .queryParam("query", query)
+                            .queryParam("select", "itemid")
+                            .queryParam("start", "0")
+                            .queryParam("length", "1")
+                            .queryParam("rankingModelId", "11111111-0000-0000-0000-000000000000")
+                            .build())
                     .header("Authorization", "Bearer")
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+                    .retrieve();
+
+            String response = responseSpec.bodyToMono(String.class).block();
 
             if (response != null) {
                 JsonNode json = objectMapper.readTree(response);
