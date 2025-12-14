@@ -291,10 +291,8 @@ public class DataCounterService {
 
     private Long fetchEchrWebCount(String languageCode) {
         try {
-            String query = "contentsitename:ECHR AND (NOT (doctype=PR OR doctype=HFCOMOLD OR doctype=HECOMOLD))";
-            if (languageCode != null) {
-                query += " AND (languageisocode=" + languageCode + ")";
-            }
+            final String query = "contentsitename:ECHR AND (NOT (doctype=PR OR doctype=HFCOMOLD OR doctype=HECOMOLD))"
+                    + (languageCode != null ? " AND (languageisocode=" + languageCode + ")" : "");
 
             String response = webClient.get()
                     .uri(uriBuilder -> uriBuilder
