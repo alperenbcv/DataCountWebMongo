@@ -1,0 +1,25 @@
+spring:
+  application:
+        name: data-counter-microservice
+
+  mongodb:
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
+    database: ${MONGO_DB:infocrawler}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    root: INFO
+    com.example.datacountwebmongo: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# WebClient ayarlar?
+webclient:
+  timeout:
+    connect: 10000
+    read: 30000
